@@ -1,0 +1,5 @@
+Create a `cli` that lets a user
+
+1. Add a todo
+2. Delete a todo
+3. Mark a todo as done
