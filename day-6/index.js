@@ -2,13 +2,13 @@ const express = require('express')
 const cors = require('cors')
 const { userModel , todoModel} = require('./db.js')
 const jwt = require('jsonwebtoken')
-const { auth , JWT_SECRET} = require('./auth.js')
+const { auth } = require('./auth.js')
 
 
 const mongoose = require('mongoose')
 mongoose.connect('mongodb+srv://abhijitam:yY9PI6KA3S2eXLGL@cluster0.wszla.mongodb.net/todo-bootcamo-app')
 
-
+const JWT_SECRET = "raman2322"
 const app = express()
 app.use(express.json())
 
@@ -55,11 +55,33 @@ app.post("/signin" , async (req,res) => {
     }
 })
 
-app.post("/todo" , auth , (req,res) => {
-    
+app.post("/todo",   auth , async (req,res) => {
+    const title = req.body.title;
+
+   try {
+    const todo = await todoModel.create({
+        title : title 
+    });
+
+    res.json({
+        message : "todo created successfully",
+        todo : todo
+    })
+   } catch (error) {
+         res.status(403).json({
+              message : "error occured"
+         })
+   }
+
 })
 
-app.get("/todos" ,auth ,  (req,res) => {
+app.get("/todos" ,auth , async (req,res) => {
+    const todos = await todoModel.find({
+        userId : req.userId
+    })
+    res.json({
+        todos : todos
+    })
     
 })
 
