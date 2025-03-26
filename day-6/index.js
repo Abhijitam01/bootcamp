@@ -2,11 +2,14 @@ const express = require('express')
 const cors = require('cors')
 const { userModel , todoModel} = require('./db.js')
 const jwt = require('jsonwebtoken')
+const { auth , JWT_SECRET} = require('./auth.js')
 
-const   JWT_SECRET = "raman2322"
+
+const mongoose = require('mongoose')
+mongoose.connect('mongodb+srv://abhijitam:yY9PI6KA3S2eXLGL@cluster0.wszla.mongodb.net/todo-bootcamo-app')
+
 
 const app = express()
-
 app.use(express.json())
 
 app.use(cors())
@@ -52,15 +55,15 @@ app.post("/signin" , async (req,res) => {
     }
 })
 
-app.post("/todo" , (req,res) => {
+app.post("/todo" , auth , (req,res) => {
     
 })
 
-app.get("/todos" , (req,res) => {
+app.get("/todos" ,auth ,  (req,res) => {
     
 })
 
 
-app.listen(3000 , () => {
+app.listen(4000 , () => {
     console.log('Server is running on port 3000')
 })
